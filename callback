@@ -1,0 +1,42 @@
+//method one
+var firstFunction = function(name){
+    console.log("My Name:" + name); 
+}
+
+var callbackFunction = function(passBeforeFuncton){
+passBeforeFuncton("Surya");
+}
+callbackFunction(firstFunction);
+
+//method 2
+var callbackfun=function(err,data){
+   if (err)
+   throw err;
+   else
+   console.log(data);
+
+}
+var calledByfun =function(anotherparam){
+    var myErr = new Error("hi..err occurs");
+anotherparam(myErr,"surya")
+}
+
+calledByfun(callbackfun);
+
+//method 3
+
+var myFunction = function (next){
+    console.log(" i am working");
+    next('hai','hello')
+}
+
+myFunction(function(err,res){
+    console.log(err,res)
+});
+
+//method 4
+
+var callback = function () {
+  console.log("start working");
+};
+setTimeout(callback, 1000); //.. or ..//  setTimeout(function(){callback()},1000)
