@@ -1,0 +1,13 @@
+
+////last three days record
+db.getCollection('collectionName').find({"created_date" : { 
+    
+    $gte: new Date(new Date().setDate(new Date().getDate()-2))
+  }  })
+
+////except last three days
+
+db.getCollection('collectionName').find({"created_date" : { 
+    
+    $lte: new Date(new Date().setDate(new Date().getDate()-2))
+  }  })
