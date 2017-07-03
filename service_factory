@@ -1,0 +1,23 @@
+////////////////////////factory and services///////////////////
+angular.module('app').service('serviceName',servicename);
+function servicename(){
+  var self =this;
+  self.myFunction = myFunction;
+function myFunction(){
+    return "alert by service"
+}
+}
+angular.module('app').factory('factoryName',factoryName);
+function factoryName(){
+    var fac ={};
+    fac.nameFunction = function(){
+        return "alert by factory"
+    }
+    return fac;
+}
+
+angular.module('app').controller('ctrlName',ctrlName)
+function ctrlName(serviceName,factoryName){
+alert(serviceName.myFunction());
+alert(factoryName.nameFunction())
+}
