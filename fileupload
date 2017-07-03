@@ -1,0 +1,165 @@
+******index.html******
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+<div ng-view></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.6/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.6/angular-route.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.1/ng-file-upload-shim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.1/ng-file-upload.js"></script>
+<script src="app.js"></script>
+<script src="file/fileuploadCtrl.js"></script>
+</body>
+</html>
+*******************
+******app.js*******
+(function () {
+    'use strict';
+
+    angular
+        .module('app', ['ngRoute', 'ngFileUpload'])
+        .config(config)
+
+    config.$inject = ['$routeProvider', '$locationProvider'];
+    function config($routeProvider, $locationProvider) {
+        $locationProvider.hashPrefix('');
+
+        $routeProvider
+            .when('/', {
+                controller: 'fileuploadController',
+                templateUrl: 'file/fileupload.html'
+            })
+
+    }
+
+})();
+********************************
+******fileupload.html*****
+
+  <div class="dropzone"  ngf-drop ngf-select ng-model="gFiles" ngf-pattern="'image/*'" ngf-multiple="true" ngf-drag-over-class="'dragover'" style="margin:6%">
+<input type="file">
+    <p ngf-no-file-drop>File Drag/Drop is not supported for this browser</p>
+
+  </div>
+****************************
+******fileuploadCtrl.js*****
+(function(angular) {
+  'use strict';
+  angular
+    .module('app')
+    .controller('fileuploadController', fileuploadController);
+
+  fileuploadController.$inject = ['$scope', 'Upload', '$timeout'];
+  function fileuploadController($scope, Upload, $timeout) {
+    $scope.$watch('gFiles', function() {
+      $scope.upload($scope.gFiles);
+    });
+    $scope.upload = function(gFiles) {
+      if (gFiles && gFiles.length) {
+        for (var i = 0; i < gFiles.length; i++) {
+          var file = gFiles[i];
+          if (!file.$error) {
+          console.log(file)
+            Upload.upload({
+                url: '/filesdata',
+                data: {
+                  file: file
+                }
+              })
+              .then(function(response) {
+                $timeout(function() {});
+              }, function(response) {
+                console.log('Error status: ' + response.status);
+              }, function(evt) {
+                var progressPercentage = parseInt(100.0 *
+                  evt.loaded / evt.total);
+                $scope.progress = progressPercentage + '% ';
+              });
+          }
+        }
+      }
+    }
+  }
+})(window.angular);
+*********************************
+******package.json********
+{
+  "name": "ExpressApp",
+  "version": "0.0.1",
+  "description": "A Node.js App using express",
+  "dependencies": {
+    "express": "4.15.3",
+    "connect-multiparty": "2.0.0",
+    "body-parser": "1.17.2",
+    "s3fs": "2.5.2"
+  },
+  "engine": "node >=0.6.x"
+}
+
+*******************************************
+*****server.js***********
+var express =   require("express");
+var app         =   express();
+var bodyParser = require('body-parser')
+var multipart = require('connect-multiparty');
+var S3FS = require('s3fs');
+
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+var jsonParser = bodyParser.json({limit:1024*1024*20, type:'application/json'});
+var urlencodedParser = bodyParser.urlencoded({ extended:true,limit:1024*1024*20,type:'application/x-www-form-urlencoding' });
+
+app.use(jsonParser);
+app.use(urlencodedParser);
+
+
+app.use(multipart());
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function (req, res) {
+  res.redirect('/index.html');
+});
+
+var s3Options = {
+  "accessKeyId": "your access key id",
+  "secretAccessKey": "your secret access key",
+  "region": "your region"   ////  "ap-southeast-1"
+  
+};
+
+app.post('/filesdata',function(req,res){
+    
+var fsImpl = new S3FS('sbfd', s3Options);
+var timestamp = new Date().getTime();
+fsImpl.writeFile(timestamp+req.files.file.name, req.files.file.type, function (err) {
+  if (err) throw err;
+  console.log('uploaded successfully');
+});
+       
+        res.end("File is uploaded");
+});
+
+app.listen(3000,function(){
+    console.log("Working on port 3000");
+});
+
+***********************************************
+Fileupload/
+  public/file=>fileupload.html-fileuploadCtrl.js,app.js,index.html
+  server.js
+
+
+
+  
+
+ 
+
+
+
