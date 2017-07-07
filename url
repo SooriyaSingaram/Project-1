@@ -1,3 +1,8 @@
 operator url :
 
 https://catalog.paytm.com/v1/mobile/getopcirclebyrange?channel=web&version=2&number=MOBILENUMBER&child_site_id=1&site_id=1
+
+
+Address from Pincode
+
+  'http://postalpincode.in/api/pincode/'+<Your PinCode Here>
