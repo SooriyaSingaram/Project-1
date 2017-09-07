@@ -1,0 +1,19 @@
+Term 1
+move to server
+
+sudo scp -i filename.pem projectfolder.zip username@ip:path
+#################################################################
+
+Term 2
+
+ sudo ssh -i mevarsity.pem ubuntu@52.66.65.163
+
+ pwd    --------- to find path 
+
+  ( move to sever in term1)
+ ls
+ unzip projectfolder.zip 
+cd projectfolder
+
+node server
+##############################################
