@@ -11,3 +11,8 @@ db.getCollection('collectionName').find({"created_date" : {
     
     $lte: new Date(new Date().setDate(new Date().getDate()-2))
   }  })
+  
+  
+////Mongoose, Select a specific field with find
+
+  https://stackoverflow.com/questions/24348437/mongoose-select-a-specific-field-with-find
