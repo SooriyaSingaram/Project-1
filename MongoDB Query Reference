@@ -16,3 +16,18 @@ db.getCollection('collectionName').find({"created_date" : {
 ////Mongoose, Select a specific field with find
 
   https://stackoverflow.com/questions/24348437/mongoose-select-a-specific-field-with-find
+
+
+Dumb DB
+
+c:\MongoDB\Server\3.4\bin> mongodump --db=dbname
+
+RESTORE
+
+c:\MongoDB\Server\3.4\bin>mongorestore -d test123 C:\MongoDB\Server\3.4\bin\dump\dbname
+
+Import CSV to DB
+
+put the file in bin folder and run the below command
+c:\MongoDB\Server\3.4\bin> mongoimport --db testtestDb --collection myCollection --type csv --headerline --file SQLDATA1.csv
+
