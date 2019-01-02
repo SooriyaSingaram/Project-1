@@ -30,6 +30,10 @@ Read Eval Print Loop . Read user input,excecute data structure, print o/p , loop
 ctrl C, ctrl D , break , up,down arrows,.load , .help,.save,.clear tab 
 Multi-core Platform:
 Node supprts multicore system,bcoz of single thread it cant be completely utilized.Cluster module is used to starting multiple worker process that will share same port.
+Restful and restless services:
+Restful services take advantage of http protocols for example get , post, delete and patch.
+Restless just use get and post to all.
+ In Restful service we can send update and delete requests to the same url(/user).But in restless, we have to use seperate urls like post/update or post/delete 
 Key Points: 
 1)No buffer - output data in chunks
 2)callback hell -because of heavily  nested callback.prevent by using promise, and creating small modules and joining them in main modules  and using async mechanism(async.waterfall and async.map)
